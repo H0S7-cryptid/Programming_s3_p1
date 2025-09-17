@@ -94,9 +94,8 @@ namespace ConSty
             for (int i = 0; i < num_of_words; i++)
             {
                 int leftBound = sepPos[i] + 1;
-                int rightBound = (i == num_of_words - 1)
-                ? sepPos[i + 1] - 1
-                : sepPos[i + 1];
+                int rightBound = (i == num_of_words - 1) ? sepPos[i + 1] - 1: sepPos[i + 1];
+
                 int segmentLength = rightBound - leftBound;
                 string word = words[i];
                 if (word.Length > segmentLength)
