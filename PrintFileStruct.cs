@@ -89,7 +89,11 @@ namespace PrintFileStruct
                             files[posToPrint].GetType() + (j == 2 ? "\u2551" : "\u2502");
                     }
                 }
-                Console.WriteLine(result);
+                Console.Write(result);
+                if (i != conHeight-1)
+                {
+                    Console.WriteLine();
+                }
                 result = "";
             }
         }
