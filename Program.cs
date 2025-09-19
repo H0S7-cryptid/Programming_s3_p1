@@ -11,7 +11,7 @@ namespace Практическое_занятие__1
     {
         static void Main(string[] args)
         {
-            ConsoleStyle k = new ConsoleStyle(50, 120);
+            ConsoleStyle k = new ConsoleStyle(30, 120);
             k.WriteTopLine();
             k.DrawTopCurve();
             k.WriteSecLine();
