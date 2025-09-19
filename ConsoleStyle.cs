@@ -8,8 +8,10 @@ namespace ConSty
 {
     public partial class ConsoleStyle
     {
-        private int[] PositionsOfSeparators_1stHalf;
-        private int[] PositionsOfSeparators_2ndHalf;
+        private int GapLength_1HF;
+        private int GapLength_2HF;
+        
+        // Конструкторы
         public ConsoleStyle()
         {
             Console.WindowWidth = 100;
@@ -49,30 +51,26 @@ namespace ConSty
             sepPos[0] = 0;
             sepPos[num_of_separators - 1] = width;
 
-            if (PositionsOfSeparators_1stHalf == null || PositionsOfSeparators_2ndHalf == null)
-            {
-                if (whitch_half)
-                {
-                    PositionsOfSeparators_1stHalf = new int[num_of_separators];
-                }
-                else
-                {
-                    PositionsOfSeparators_2ndHalf = new int[num_of_separators];
-                }
-            }
-
             for (int i = 1; i < num_of_separators - 1; i++)
             {
-                if (whitch_half)
-                {
-                    PositionsOfSeparators_1stHalf[i] = i * width / num_of_words;
-                }
-                else
-                {
-                    PositionsOfSeparators_2ndHalf[i] = i * width / num_of_words;
-                }
                 sepPos[i] = i * width / num_of_words;
             }
+
+            // Вместо запоминания позиций для разделителей-палок
+            // мы записываем саму "ширину" столбца, в зависимости от того,
+            // какую часть консоли мы хотим заполнить равными по ширине столбцами
+            //       ||
+            //       \/
+            if (whitch_half)
+            {
+                GapLength_1HF = sepPos[1] - sepPos[0] - 1;
+            }
+            else
+            {
+                GapLength_2HF = sepPos[1] - sepPos[0] - 1;
+            }
+
+            // Далее код работает как и до этого
 
             char[] buffer = new char[width];
             for (int i = 0; i < width; i++)
@@ -251,13 +249,13 @@ namespace ConSty
         }
 
         // Геттеры для работы с частями консоли (её разделителями)
-        public int[] GetSep1stHalf()
+        public int GetSep1stHalf()
         {
-            return PositionsOfSeparators_1stHalf;
+            return GapLength_1HF;
         }
-        public int[] GetSep2ndHalf()
+        public int GetSep2ndHalf()
         {
-            return PositionsOfSeparators_2ndHalf;
+            return GapLength_2HF;
         }
     }
 
