@@ -13,14 +13,12 @@ namespace PrintFileStruct
     {
         private List<FileStruct.File> files;
         private int conHeight;
-        private bool NoMoreElem;
 
         // Конструктор
         public PrintFile()
         {
             files = new List<FileStruct.File>();
             conHeight = Console.WindowHeight - 8;
-            NoMoreElem = false;
         }
 
         // Геттер для работы со списком
@@ -35,63 +33,58 @@ namespace PrintFileStruct
             files.Add(file);
         }
 
-        public void Print1stHalfOfConsole(int leftBorder, int rightBorder)
+        // Теперь вместо правой и левой границы функция работает сразу с шириной столбца
+        // Также функция возвращает строку в соответствии с вертикальной координатой относительно положения в консоли
+        public string Print1stHalfOfConsoleLine(int gapLenght, int NegativeHeightPos, bool partOfConsole)
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Cyan;
 
             int maxLengthOfExt = files.Any() ? files.Max(item => item.GetType().Length) : 0;
-            int gapLenght = rightBorder - leftBorder - 1 - maxLengthOfExt;
-
-            if (NoMoreElem)
-            {
-                /*Console.Write(" ".PadRight(gapLenght + 1 + maxLengthOfExt, ' ') + "\u2502" +
-                    " ".PadRight(gapLenght + 1 + maxLengthOfExt, ' ') + "\u2502" +
-                    " ".PadRight(gapLenght + 1 + maxLengthOfExt, ' ') + "\u2502");
-                Console.Write("\u2551");*/
-                //continue;
-                //return "";
-            }
 
             string result = "";
-            int maxCols = 3;
 
-            for (int i = 0; i < conHeight; i++)
+            // Количество столбцов расчитывается как выбор между true и false:
+            // количество столбцов будет 3, если передано true, а если false - 4
+            // Следовательно и сами значения представляют собой обрабатываемые части консоли
+            int maxCols = partOfConsole ? 3: 4;
+            result += "\u2551";
+
+            for (int j = 0; j < maxCols; j++)
             {
-                result += "\u2551";
-                for (int j = 0; j < maxCols; j++)
+                if (NegativeHeightPos == 0 && j == 0)
                 {
-                    if (i == 0 && j == 0)
-                    {
-                        result += "..".PadRight(gapLenght + maxLengthOfExt, ' ');
-                        result += "\u2502";
-                        continue;
-                    }
-
-                    int posToPrint = j * conHeight + i;
-
-                    if (posToPrint >= files.Count())
-                    {
-                        NoMoreElem = true;
-                        break;
-                    }
-
-                    if (gapLenght < files[posToPrint].GetName().Length)
-                    {
-                        string w = files[posToPrint].GetName().Substring(0, gapLenght);
-                        w = w.Remove(w.Length - 1) + "~";
-                        result += w + " " + files[posToPrint].GetType().PadRight(gapLenght - 1, ' ') +
-                            (j == maxCols - 1 ? "\u2551" : "\u2502");
-                    }
-                    else
-                    {
-                        result += files[posToPrint].GetName().PadRight(gapLenght - 1, ' ') + " " +
-                            files[posToPrint].GetType() + (j == 2 ? "\u2551" : "\u2502");
-                    }
+                    result += "..".PadRight(gapLenght, ' ');
+                    result += (j == maxCols - 1 ? "\u2551" : "\u2502");
+                    continue;
                 }
-                Console.WriteLine(result);
-                result = "";
+
+                int posToPrint = j * conHeight + NegativeHeightPos;
+
+                // Если нам нечего вставить в столбец имён и расширений, мы пропускаем этот момент, заполняя пропуск пробелами
+                // и выставляя, в зависимости от места заполнения, нужный разделитель
+                if (posToPrint >= files.Count())
+                {
+                    result += " ".PadRight(gapLenght, ' ');
+                    result += (j == maxCols - 1 ? "\u2551" : "\u2502");
+                    continue;
+                }
+
+                if (gapLenght < files[posToPrint].GetName().Length)
+                {
+                    string w = files[posToPrint].GetName().Substring(0, gapLenght);
+                    w = w.Remove(w.Length - 1) + "~";
+                    result += w + " " + files[posToPrint].GetType().PadRight(gapLenght - maxLengthOfExt - 1, ' ') +
+                        (j == maxCols - 1 ? "\u2551" : "\u2502");
+                }
+                else
+                {
+                    result += files[posToPrint].GetName().PadRight(gapLenght - maxLengthOfExt - 1, ' ') + " " +
+                        files[posToPrint].GetType() + (j == 2 ? "\u2551" : "\u2502");
+                }
             }
+
+            return result;
         }
 
 
