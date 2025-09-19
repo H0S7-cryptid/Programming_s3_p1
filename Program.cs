@@ -27,7 +27,6 @@ namespace Практическое_занятие__1
                 string line = files.Print1stHalfOfConsoleLine(k.GetSep1stHalf(), i, true);
                 Console.WriteLine(line);
             }
-            //files.Print1stHalfOfConsole(k.GetSep1stHalf()[0], k.GetSep1stHalf()[1]);
 
             Console.WriteLine();
             k.DrawBottomCurve();
