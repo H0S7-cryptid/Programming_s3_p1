@@ -45,11 +45,11 @@ namespace ConSty
             int num_of_words = words.Count;
             int words_full_len = words.Sum(w => w.Length) + num_of_words + 2;
 
-            int num_of_separators = words_full_len + 1;
+            int num_of_separators = num_of_words + 1;
 
             int[] sepPos = new int[num_of_separators];
             sepPos[0] = 0;
-            sepPos[num_of_separators - 1] = width;
+            sepPos[num_of_separators - 1] = width - 1;
 
             for (int i = 1; i < num_of_separators - 1; i++)
             {
