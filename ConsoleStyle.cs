@@ -8,9 +8,9 @@ namespace ConSty
 {
     public partial class ConsoleStyle
     {
-        private int GapLength_1HF;
-        private int GapLength_2HF;
-        
+        private int[] GapLength_1HF;
+        private int[] GapLength_2HF;
+
         // Конструкторы
         public ConsoleStyle()
         {
@@ -63,11 +63,21 @@ namespace ConSty
             //       \/
             if (whitch_half)
             {
-                GapLength_1HF = sepPos[1] - sepPos[0] - 1;
+                int maxCols = 3;
+                GapLength_1HF = new int[maxCols];
+                for (int i = 0; i < maxCols; i++)
+                {
+                    GapLength_1HF[i] = sepPos[i + 1] - sepPos[i] - 1;
+                }
             }
             else
             {
-                GapLength_2HF = sepPos[1] - sepPos[0] - 1;
+                int maxCols = 4;
+                GapLength_2HF = new int[maxCols];
+                for (int i = 0; i < maxCols; i++)
+                {
+                    GapLength_2HF[i] = sepPos[i + 1] - sepPos[i] - 1;
+                }
             }
 
             // Далее код работает как и до этого
@@ -92,7 +102,7 @@ namespace ConSty
             for (int i = 0; i < num_of_words; i++)
             {
                 int leftBound = sepPos[i] + 1;
-                int rightBound = (i == num_of_words - 1) ? sepPos[i + 1] - 1: sepPos[i + 1];
+                int rightBound = (i == num_of_words - 1) ? sepPos[i + 1] - 1 : sepPos[i + 1];
 
                 int segmentLength = rightBound - leftBound;
                 string word = words[i];
@@ -248,11 +258,11 @@ namespace ConSty
         }
 
         // Геттеры для работы с частями консоли (её разделителями)
-        public int GetSep1stHalf()
+        public int[] GetSep1stHalf()
         {
             return GapLength_1HF;
         }
-        public int GetSep2ndHalf()
+        public int[] GetSep2ndHalf()
         {
             return GapLength_2HF;
         }

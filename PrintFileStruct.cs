@@ -35,7 +35,7 @@ namespace PrintFileStruct
 
         // Теперь вместо правой и левой границы функция работает сразу с шириной столбца
         // Также функция возвращает строку в соответствии с вертикальной координатой относительно положения в консоли
-        public string Print1stHalfOfConsoleLine(int gapLenght, int NegativeHeightPos, bool partOfConsole)
+        public string Print1stHalfOfConsoleLine(ConsoleStyle CONS, int NegativeHeightPos, bool partOfConsole)
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -50,8 +50,10 @@ namespace PrintFileStruct
             int maxCols = partOfConsole ? 3: 4;
             result += "\u2551";
 
+            int[] gaps = CONS.GetSep1stHalf();
             for (int j = 0; j < maxCols; j++)
             {
+                int gapLenght = gaps[j];
                 if (NegativeHeightPos == 0 && j == 0)
                 {
                     result += "..".PadRight(gapLenght, ' ');
@@ -69,21 +71,22 @@ namespace PrintFileStruct
                     result += (j == maxCols - 1 ? "\u2551" : "\u2502");
                     continue;
                 }
-
-                if (gapLenght < files[posToPrint].GetName().Length)
+                if (gapLenght < files[posToPrint].GetName().Length + maxLengthOfExt + 1)
                 {
-                    string w = files[posToPrint].GetName().Substring(0, gapLenght);
+                    //Обрезаем имя
+                    string w = files[posToPrint].GetName().Substring(0, gapLenght - maxLengthOfExt - 1);
                     w = w.Remove(w.Length - 1) + "~";
-                    result += w + " " + files[posToPrint].GetType().PadRight(gapLenght - maxLengthOfExt - 1, ' ') +
-                        (j == maxCols - 1 ? "\u2551" : "\u2502");
+
+                    result += w + " ";
+                    result += files[posToPrint].GetType().PadLeft(gapLenght - w.Length - 1, ' ');
+                    result += (j == maxCols - 1 ? "\u2551" : "\u2502");
                 }
                 else
                 {
-                    result += files[posToPrint].GetName().PadRight(gapLenght - maxLengthOfExt - 1, ' ') + " " +
+                    result += files[posToPrint].GetName().PadRight(gapLenght - maxLengthOfExt, ' ') + " " +
                         files[posToPrint].GetType() + (j == 2 ? "\u2551" : "\u2502");
                 }
             }
-
             return result;
         }
 
