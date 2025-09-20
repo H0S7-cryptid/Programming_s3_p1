@@ -11,7 +11,7 @@ namespace Практическое_занятие__1
     {
         static void Main(string[] args)
         {
-            ConsoleStyle k = new ConsoleStyle(50, 120);
+            ConsoleStyle k = new ConsoleStyle(30, 80);
             k.WriteTopLine();
             k.DrawTopCurve();
             k.WriteSecLine();
@@ -24,7 +24,7 @@ namespace Практическое_занятие__1
             }
             for (int i = 0; i < Console.WindowHeight - 8; i++)
             {
-                string line = files.Print1stHalfOfConsoleLine(k.GetSep1stHalf(), i, true);
+                string line = files.Print1stHalfOfConsoleLine(k, i, true);
                 Console.WriteLine(line);
             }
 
