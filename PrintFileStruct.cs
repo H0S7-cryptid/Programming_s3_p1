@@ -128,6 +128,7 @@ namespace PrintFileStruct
 
             return result;
         }
+
         // Функция, которая обрезает строку,
         // подгоняя её размер под заданную длину и заменяя её последний символ знаком ~
         private string CutString(string str, int gapLength)
