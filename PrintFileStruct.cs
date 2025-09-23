@@ -90,6 +90,60 @@ namespace PrintFileStruct
             return result;
         }
 
-        
+        public string Print2ndHalfOfConsoleLine(ConsoleStyle CONS, int NegativeHeightPos)
+        {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            int maxLengthOfExt = files.Any() ? files.Max(item => item.GetType().Length) : 0;
+            string result = "";
+
+            int maxCols = 4;
+            result += "\u2551";
+
+            int[] gaps = CONS.GetSep2ndHalf();
+
+            // Ситуация, когда нам надо напечатать первую строку, которая отличается по начинке заданными словами
+            // Для этого мы используем длины между разделителями во втором столбце
+            if (NegativeHeightPos == 0)
+            {
+                result += "..".PadRight(gaps[NegativeHeightPos], ' ');
+                result += "\u2502" + CutString("\u2580КАТАЛОГ\u2580", gaps[1]).PadLeft(gaps[1], ' ') + "\u2502" +
+                    CutString("11.10.02", gaps[2]).PadLeft(gaps[2], ' ') +
+                    "\u2502" + CutString("19:48", gaps[3]).PadLeft(gaps[3] - 2, ' ') + "\u2551";
+                return result;
+            } else {
+
+            // Сборка строки по заданным словам из класса типа FileStruct.File, учитывая пробел в первом столбце,
+            // разделители между столбцами и ширину столбцов
+            result += CutString(files[NegativeHeightPos].GetName(), gaps[0] - maxLengthOfExt - 1);
+            result += " ";
+            result += files[NegativeHeightPos].GetType();
+            result += "\u2502";
+            result += CutString(files[NegativeHeightPos].GetFileSize(), gaps[1]).PadLeft(gaps[1], ' ');
+            result += "\u2502";
+            result += CutString(files[NegativeHeightPos].GetLastEditedDate(), gaps[2]).PadLeft(gaps[2], ' ');
+            result += "│";
+            result += CutString(files[NegativeHeightPos].GetLastEditedTime(), gaps[3]).PadLeft(gaps[3] - 2, ' ');
+            result += "\u2551";
+
+            return result;
+        }
+
+        // Функция, которая обрезает строку,
+        // подгоняя её размер под заданную длину и заменяя её последний символ знаком ~
+        private string CutString(string str, int gapLength)
+        {
+            if (str.Length > gapLength)
+            {
+                string w = str.Substring(0, gapLength);
+                w = w.Remove(w.Length - 1) + "~";
+                return w;
+            }
+            else
+            {
+                return str;
+            }
+        }
     }
 }
