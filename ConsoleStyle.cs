@@ -25,6 +25,21 @@ namespace ConSty
             Console.SetBufferSize(W, H);
         }
 
+        // Функции для установки цветов для свич-панели
+        private void SetSwitchColors()
+        {
+            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+
+        // Функции для установки мейн цветов консоли (ч/б)
+        private void SetMainColors()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
         // Функции для установки основных цветов
         private void SetDefColors()
         {
@@ -266,6 +281,48 @@ namespace ConSty
         {
             return GapLength_2HF;
         }
-    }
 
+        public void Catalog()
+        {
+            int halfW = Console.WindowWidth / 2 - 1;
+
+            int i = 0;
+            for (int ind = 0; ind < 2; ind++)
+            {
+                if (ind != 1) i = halfW;
+                else i = halfW - 2;
+                Console.Write("\u255F");
+                while (i > 0)
+                {
+                    Console.Write("\u2500");
+                    i--;
+                }
+                Console.Write("\u2562");
+            }
+
+            Console.WriteLine();
+            string str = "\u2580КАТАЛОГ\u2580 11.10.02  19:48";
+            Console.Write("\u2551..");
+            Console.Write(str.PadLeft(halfW - 2));
+            Console.Write("\u2551\u2551..");
+            Console.Write(str.PadLeft(halfW - 4));
+            Console.Write("\u2551");
+        }
+
+        public void SwitchMenu()
+        {
+            string[] WORDS = { "Помощь", "Вызов", "Чтение", "Правка", "Копия", "НовИмя", "НовКат", "Удал-е", "Меню", "Выход" };
+
+            SetMainColors();
+            Console.WriteLine("C:\\NC>");
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Write(i+1);
+                SetSwitchColors();
+                Console.Write(WORDS[i]);
+                SetMainColors();
+                Console.Write(" "); 
+            }
+        }
+    }
 }

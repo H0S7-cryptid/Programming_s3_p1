@@ -28,8 +28,11 @@ namespace Практическое_занятие__1
                 Console.WriteLine(line);
             }
 
+            
+            k.Catalog();
             Console.WriteLine();
             k.DrawBottomCurve();
+            k.SwitchMenu();
             Console.ReadKey();
         }
     }
