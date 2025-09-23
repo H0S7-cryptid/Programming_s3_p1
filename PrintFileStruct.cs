@@ -35,7 +35,7 @@ namespace PrintFileStruct
 
         // Теперь вместо правой и левой границы функция работает сразу с шириной столбца
         // Также функция возвращает строку в соответствии с вертикальной координатой относительно положения в консоли
-        public string Print1stHalfOfConsoleLine(ConsoleStyle CONS, int NegativeHeightPos, bool partOfConsole)
+        public string Print1stHalfOfConsoleLine(ConsoleStyle CONS, int NegativeHeightPos)
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -47,7 +47,7 @@ namespace PrintFileStruct
             // Количество столбцов расчитывается как выбор между true и false:
             // количество столбцов будет 3, если передано true, а если false - 4
             // Следовательно и сами значения представляют собой обрабатываемые части консоли
-            int maxCols = partOfConsole ? 3: 4;
+            int maxCols = 3;
             result += "\u2551";
 
             int[] gaps = CONS.GetSep1stHalf();
@@ -74,8 +74,7 @@ namespace PrintFileStruct
                 if (gapLenght < files[posToPrint].GetName().Length + maxLengthOfExt + 1)
                 {
                     //Обрезаем имя
-                    string w = files[posToPrint].GetName().Substring(0, gapLenght - maxLengthOfExt - 1);
-                    w = w.Remove(w.Length - 1) + "~";
+                    string w = CutString(files[posToPrint].GetName(), gapLenght - maxLengthOfExt - 1);
 
                     result += w + " ";
                     result += files[posToPrint].GetType().PadLeft(gapLenght - w.Length - 1, ' ');
@@ -90,6 +89,60 @@ namespace PrintFileStruct
             return result;
         }
 
+        public string Print2ndHalfOfConsoleLine(ConsoleStyle CONS, int NegativeHeightPos)
+        {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Cyan;
 
+            int maxLengthOfExt = files.Any() ? files.Max(item => item.GetType().Length) : 0;
+            string result = "";
+
+            int maxCols = 4;
+            result += "\u2551";
+
+            int[] gaps = CONS.GetSep2ndHalf();
+
+            // Ситуация, когда нам надо напечатать первую строку, которая отличается по начинке заданными словами
+            // Для этого мы используем длины между разделителями во втором столбце
+            if (NegativeHeightPos == 0)
+            {
+                result += "..".PadRight(gaps[NegativeHeightPos], ' ');
+                result += "\u2502" + CutString("\u2580КАТАЛОГ\u2580", gaps[1]).PadLeft(gaps[1], ' ') + "\u2502" + 
+                    CutString("11.10.02", gaps[2]).PadLeft(gaps[2], ' ') +
+                    "\u2502" + CutString("19:48", gaps[3]).PadLeft(gaps[3] - 2, ' ') + "\u2551";
+                return result;
+            }
+
+            // Сборка строки по заданным словам из класса типа FileStruct.File, учитывая пробел в первом столбце,
+            // разделители между столбцами и ширину столбцов
+            result += CutString(files[NegativeHeightPos].GetName(), gaps[0] - maxLengthOfExt - 1);
+            result += " ";
+            result += files[NegativeHeightPos].GetType();
+            result += "\u2502";
+            result += CutString(files[NegativeHeightPos].GetFileSize(), gaps[1]).PadLeft(gaps[1], ' ');
+            result += "\u2502";
+            result += CutString(files[NegativeHeightPos].GetLastEditedDate(), gaps[2]).PadLeft(gaps[2], ' ');
+            result += "│";
+            result += CutString(files[NegativeHeightPos].GetLastEditedTime(), gaps[3]).PadLeft(gaps[3] - 2, ' ');
+            result += "\u2551";
+
+            return result;
+        }
+
+        // Функция, которая обрезает строку,
+        // подгоняя её размер под заданную длину и заменяя её последний символ знаком ~
+        private string CutString(string str, int gapLength)
+        {
+            if (str.Length > gapLength)
+            {
+                string w = str.Substring(0, gapLength);
+                w = w.Remove(w.Length - 1) + "~";
+                return w;
+            }
+            else
+            {
+                return str;
+            }
+        }
     }
 }
