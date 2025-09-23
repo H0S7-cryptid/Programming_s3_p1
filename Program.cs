@@ -11,7 +11,7 @@ namespace Практическое_занятие__1
     {
         static void Main(string[] args)
         {
-            ConsoleStyle k = new ConsoleStyle(30, 120);
+            ConsoleStyle k = new ConsoleStyle(30, 80);
             k.WriteTopLine();
             k.DrawTopCurve();
             k.WriteSecLine();
@@ -22,7 +22,11 @@ namespace Практическое_занятие__1
                 FileStruct.File F1 = new FileStruct.File($"Abbadon{i} ic", "18:33", "13.02.2002", "exe");
                 files.AddFile(F1);
             }
-            files.Print1stHalfOfConsole(k.GetSep1stHalf()[0], k.GetSep1stHalf()[1]);
+            for (int i = 0; i < Console.WindowHeight - 8; i++)
+            {
+                string line = files.Print1stHalfOfConsoleLine(k, i, true);
+                Console.WriteLine(line);
+            }
 
             Console.WriteLine();
             k.DrawBottomCurve();

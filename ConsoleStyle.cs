@@ -8,8 +8,10 @@ namespace ConSty
 {
     public partial class ConsoleStyle
     {
-        private int[] PositionsOfSeparators_1stHalf;
-        private int[] PositionsOfSeparators_2ndHalf;
+        private int[] GapLength_1HF;
+        private int[] GapLength_2HF;
+
+        // Конструкторы
         public ConsoleStyle()
         {
             Console.WindowWidth = 100;
@@ -43,36 +45,42 @@ namespace ConSty
             int num_of_words = words.Count;
             int words_full_len = words.Sum(w => w.Length) + num_of_words + 2;
 
-            int num_of_separators = words_full_len + 1;
+            int num_of_separators = num_of_words + 1;
 
             int[] sepPos = new int[num_of_separators];
             sepPos[0] = 0;
-            sepPos[num_of_separators - 1] = width;
-
-            if (PositionsOfSeparators_1stHalf == null || PositionsOfSeparators_2ndHalf == null)
-            {
-                if (whitch_half)
-                {
-                    PositionsOfSeparators_1stHalf = new int[num_of_separators];
-                }
-                else
-                {
-                    PositionsOfSeparators_2ndHalf = new int[num_of_separators];
-                }
-            }
+            sepPos[num_of_separators - 1] = width - 1;
 
             for (int i = 1; i < num_of_separators - 1; i++)
             {
-                if (whitch_half)
-                {
-                    PositionsOfSeparators_1stHalf[i] = i * width / num_of_words;
-                }
-                else
-                {
-                    PositionsOfSeparators_2ndHalf[i] = i * width / num_of_words;
-                }
                 sepPos[i] = i * width / num_of_words;
             }
+
+            // Вместо запоминания позиций для разделителей-палок
+            // мы записываем саму "ширину" столбца, в зависимости от того,
+            // какую часть консоли мы хотим заполнить равными по ширине столбцами
+            //       ||
+            //       \/
+            if (whitch_half)
+            {
+                int maxCols = 3;
+                GapLength_1HF = new int[maxCols];
+                for (int i = 0; i < maxCols; i++)
+                {
+                    GapLength_1HF[i] = sepPos[i + 1] - sepPos[i] - 1;
+                }
+            }
+            else
+            {
+                int maxCols = 4;
+                GapLength_2HF = new int[maxCols];
+                for (int i = 0; i < maxCols; i++)
+                {
+                    GapLength_2HF[i] = sepPos[i + 1] - sepPos[i] - 1;
+                }
+            }
+
+            // Далее код работает как и до этого
 
             char[] buffer = new char[width];
             for (int i = 0; i < width; i++)
@@ -94,9 +102,8 @@ namespace ConSty
             for (int i = 0; i < num_of_words; i++)
             {
                 int leftBound = sepPos[i] + 1;
-                int rightBound = (i == num_of_words - 1)
-                ? sepPos[i + 1] - 1
-                : sepPos[i + 1];
+                int rightBound = (i == num_of_words - 1) ? sepPos[i + 1] - 1 : sepPos[i + 1];
+
                 int segmentLength = rightBound - leftBound;
                 string word = words[i];
                 if (word.Length > segmentLength)
@@ -253,11 +260,11 @@ namespace ConSty
         // Геттеры для работы с частями консоли (её разделителями)
         public int[] GetSep1stHalf()
         {
-            return PositionsOfSeparators_1stHalf;
+            return GapLength_1HF;
         }
         public int[] GetSep2ndHalf()
         {
-            return PositionsOfSeparators_2ndHalf;
+            return GapLength_2HF;
         }
     }
 
