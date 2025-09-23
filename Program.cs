@@ -19,17 +19,18 @@ namespace Практическое_занятие__1
 
             for (int i = 0; i < 70; i++)
             {
-                FileStruct.File F1 = new FileStruct.File($"Abbadon{i} ic", "18:33", "13.02.2002", "exe");
+                FileStruct.File F1 = new FileStruct.File($"Abbadon{i} ic", "18:33", "13.02.2002", "exe", $"{i*1007/(i % 2 == 0 ? 40: 15)}");
                 files.AddFile(F1);
             }
             for (int i = 0; i < Console.WindowHeight - 8; i++)
             {
-                string line = files.Print1stHalfOfConsoleLine(k, i, true);
+                string line = files.Print1stHalfOfConsoleLine(k, i);
+                Console.Write(line);
+                line = files.Print2ndHalfOfConsoleLine(k, i);
                 Console.WriteLine(line);
             }
 
             Console.WriteLine();
-            k.DrawBottomCurve();
             Console.ReadKey();
         }
     }

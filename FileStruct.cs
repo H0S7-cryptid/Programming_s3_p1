@@ -12,6 +12,7 @@ namespace FileStruct
         private string _last_edit_time;
         private string _last_edit_date;
         private string _type;
+        private string _file_size;
 
         // Констукторы
         public File()
@@ -21,12 +22,13 @@ namespace FileStruct
             _last_edit_date = "00.00.0000";
             _type = ".///";
         }
-        public File(string name, string last_edit_time, string last_edit_date, string type)
+        public File(string name, string last_edit_time, string last_edit_date, string type, string file_size)
         {
             _name = name;
             _last_edit_time = last_edit_time;
             _last_edit_date = last_edit_date;
-            this._type = type;
+            _type = type;
+            _file_size = file_size;
         }
 
         // Сеттеры для полей класса
@@ -46,6 +48,10 @@ namespace FileStruct
         {
             this._type = type;
         }
+        public void SetFileSuze(string file_size)
+        {
+            _file_size = file_size;
+        }
 
         // Геттеры для полей класса
         public string GetName()
@@ -63,6 +69,10 @@ namespace FileStruct
         public string GetType()
         {
             return this._type;
+        }
+        public string GetFileSize()
+        {
+            return this._file_size;
         }
     }
 }
