@@ -112,22 +112,25 @@ namespace PrintFileStruct
                     CutString("11.10.02", gaps[2]).PadLeft(gaps[2], ' ') +
                     "\u2502" + CutString("19:48", gaps[3]).PadLeft(gaps[3] - 2, ' ') + "\u2551";
                 return result;
-            } else {
+            }
+            else
+            {
 
-            // Сборка строки по заданным словам из класса типа FileStruct.File, учитывая пробел в первом столбце,
-            // разделители между столбцами и ширину столбцов
-            result += CutString(files[NegativeHeightPos].GetName(), gaps[0] - maxLengthOfExt - 1);
-            result += " ";
-            result += files[NegativeHeightPos].GetType();
-            result += "\u2502";
-            result += CutString(files[NegativeHeightPos].GetFileSize(), gaps[1]).PadLeft(gaps[1], ' ');
-            result += "\u2502";
-            result += CutString(files[NegativeHeightPos].GetLastEditedDate(), gaps[2]).PadLeft(gaps[2], ' ');
-            result += "│";
-            result += CutString(files[NegativeHeightPos].GetLastEditedTime(), gaps[3]).PadLeft(gaps[3] - 2, ' ');
-            result += "\u2551";
+                // Сборка строки по заданным словам из класса типа FileStruct.File, учитывая пробел в первом столбце,
+                // разделители между столбцами и ширину столбцов
+                result += CutString(files[NegativeHeightPos].GetName(), gaps[0] - maxLengthOfExt - 1);
+                result += " ";
+                result += files[NegativeHeightPos].GetType();
+                result += "\u2502";
+                result += CutString(files[NegativeHeightPos].GetFileSize(), gaps[1]).PadLeft(gaps[1], ' ');
+                result += "\u2502";
+                result += CutString(files[NegativeHeightPos].GetLastEditedDate(), gaps[2]).PadLeft(gaps[2], ' ');
+                result += "│";
+                result += CutString(files[NegativeHeightPos].GetLastEditedTime(), gaps[3]).PadLeft(gaps[3] - 2, ' ');
+                result += "\u2551";
 
-            return result;
+                return result;
+            }
         }
 
         // Функция, которая обрезает строку,
